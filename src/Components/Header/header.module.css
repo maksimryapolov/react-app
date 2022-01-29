@@ -16,6 +16,10 @@
     color: black;
 }
 
+.linkActive {
+    color: darkgray;
+}
+
 .user a {
     text-decoration: none;
 }

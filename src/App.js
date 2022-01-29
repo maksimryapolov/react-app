@@ -6,12 +6,19 @@ import Auth from "./Components/User/Auth";
 import Register from "./Components/User/Register";
 
 
-function App() {
+function App(props) {
+
     return (
         <div className="container">
             <Header/>
             <Routes>
-                <Route path="/" element={<Cards/>}/>
+                <Route path="/" element={
+                    <Cards
+                        state={props.state}
+                        dispatch={props.dispatch}
+                        getInputs={props.getInputs}
+                    />}
+                />
                 <Route path="/auth" element={<Auth/>}/>
                 <Route path="/register" element={<Register/>}/>
             </Routes>

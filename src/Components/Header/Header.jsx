@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import s from "./header.module.css";
 
 function Header () {
@@ -7,15 +7,16 @@ function Header () {
         <header className={s.header}>
             <div className={s.logo}>
                 <h1>
-                    <Link to="/">Логотип</Link>
+                    <NavLink to="/">Логотип</NavLink>
                 </h1>
             </div>
             <div className={s.user}>
-                <Link to="/auth">Войти</Link>
-                <Link to="/register">Регистрация</Link>
+                <NavLink className={({ isActive }) => isActive ? s.linkActive : ""} to="/auth">Войти</NavLink>
+                <NavLink className={({ isActive }) => isActive ? s.linkActive : ""} to="/register">Регистрация</NavLink>
             </div>
         </header>
     );
 }
+
 
 export default Header;
