@@ -1,4 +1,4 @@
-// TODO: сделать actionCreator, Reduser
+import { cardsReduser } from "./redusers/cardsReduser";
 
 let store = {
     _state: {
@@ -12,20 +12,20 @@ let store = {
                         category: "Питание",
                         invoice: "Карта",
                         sum: "500,00",
-                        currency: "₽"
+                        currency: "₽",
                     },
                     {
                         category: "Транспорт",
                         invoice: "Наличные",
                         sum: "1500,00",
-                        currency: "₽"
-                    }
-                ]
-            }
+                        currency: "₽",
+                    },
+                ],
+            },
         ],
         _inputs: {
-            inputTxtCat: ''
-        }
+            inputTxtCat: "",
+        },
     },
 
     /**
@@ -41,36 +41,15 @@ let store = {
     },
 
     dispatch(action) {
-        if(action.type == "SET_NEW_EXPENS") {
-            let expense =  {
-                category: action.category,
-                invoice: action.invoice,
-                sum: action.sum,
-                currency: "₽"
-            };
-            this._state.cards[0].items.push(expense);
-            this._changeState(this);
-        } else if(action.type == "SET_TEXT_INPUT_CATEGORY") {
-            this._state._inputs.inputTxtCat = action.text;
-            this._changeState(this);
-        }
+        this._state = cardsReduser(this._state, action);
+        this._changeState(this);
     },
-
-    /**
-     * Setters
-     * @param category
-     * @param invoice
-     * @param sum
-    setExpense(category, invoice, sum) {},
-    setTxtValForCat(text) {},
-     */
 
     _changeState() {},
 
     subscribe(observe) {
         this._changeState = observe;
     },
-
 };
 
 window.state = store;

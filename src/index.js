@@ -1,28 +1,31 @@
-import React from 'react';
-import {BrowserRouter} from 'react-router-dom';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import store from './redux/state';
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
+import ReactDOM from "react-dom";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import store from "./redux/store";
+import "./index.css";
 
-let refresh = (store) => {
+let refresh = (state) => {
     ReactDOM.render(
         <React.StrictMode>
             <BrowserRouter>
-                <App state={store.getState()}
-                     dispatch={store.dispatch.bind(store)}
-                     getInputs={store.getInputs.bind(store)}
+                <App
+                    state={state}
+                    dispatch={store.dispatch.bind(store)} // Почему берет из внешнего окружения
                 />
             </BrowserRouter>
         </React.StrictMode>,
-        document.getElementById('root')
+        document.getElementById("root")
     );
 };
 
-refresh(store);
+refresh(store.getState());
 
-store.subscribe(refresh);
+store.subscribe(() => {
+    let state = store.getState();
+    refresh(state);
+});
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

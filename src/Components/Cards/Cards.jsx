@@ -1,5 +1,6 @@
 import React from "react";
 import s from "./cards.module.css";
+import {setTextInputCatCreator, setNewExpens} from "./../../redux/redusers/cardsReduser";
 
 function getBodyInvoice(items) {
     return items.map((item, idx)=>  {
@@ -25,7 +26,6 @@ function Cards(props) {
     let refInvInput = React.createRef();
     let refSumInput = React.createRef();
 
-
     let dataRender = props.state.cards.map((item, idx) => {
         return (
             <div className={s.card} key={idx}>
@@ -45,19 +45,18 @@ function Cards(props) {
     });
 
     function onChangeTxtCat(event) {
-        props.dispatch({
-            type: 'SET_TEXT_INPUT_CATEGORY',
-            text: event.target.value
-        });
+        props.dispatch(setTextInputCatCreator(event.target.value));
     }
 
     function onSubmithundler() {
-        props.dispatch({
-            type: 'SET_NEW_EXPENS',
-            category: refCatInput.current.value,
-            invoice: refInvInput.current.value,
-            sum: refSumInput.current.value
+        let data = setNewExpens(
+            { 
+                category: refCatInput.current.value, 
+                invoice: refInvInput.current.value, 
+                sum: refSumInput.current.value
         });
+
+        props.dispatch(data);
     }
 
     return (
@@ -66,7 +65,7 @@ function Cards(props) {
             <div className="">
                 <div className="">
                     <div>Категория</div>
-                    <input ref={refCatInput} onChange={onChangeTxtCat} type="text" value={props.getInputs().inputTxtCat}/>
+                    <input ref={refCatInput} onChange={onChangeTxtCat} type="text" value={props.state.inputs.inputTxtCat}/>
                 </div>
                 <div className="">
                     <div>Счет</div>
