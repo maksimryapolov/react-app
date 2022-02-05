@@ -5,27 +5,18 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import store from "./redux/store";
 import "./index.css";
+import {Provider} from "react-redux";
 
-let refresh = (state) => {
-    ReactDOM.render(
-        <React.StrictMode>
-            <BrowserRouter>
-                <App
-                    state={state}
-                    dispatch={store.dispatch.bind(store)} // Почему берет из внешнего окружения
-                />
-            </BrowserRouter>
-        </React.StrictMode>,
-        document.getElementById("root")
-    );
-};
-
-refresh(store.getState());
-
-store.subscribe(() => {
-    let state = store.getState();
-    refresh(state);
-});
+ReactDOM.render(
+    <React.StrictMode>
+        <BrowserRouter>
+            <Provider store={store}>
+                <App />
+            </Provider>
+        </BrowserRouter>
+    </React.StrictMode>,
+    document.getElementById("root")
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

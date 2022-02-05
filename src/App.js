@@ -1,23 +1,18 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Header from "./Components/Header/Header";
-import Cards from "./Components/Cards/Cards";
+import CardsContainer from "./Components/Cards/CardsContainer";
 import Auth from "./Components/User/Auth";
 import Register from "./Components/User/Register";
 
-function App(props) {
+function App() {
     return (
         <div className="container">
             <Header />
             <Routes>
                 <Route
                     path="/"
-                    element={
-                        <Cards
-                            state={props.state.mainPage}
-                            dispatch={props.dispatch}
-                        />
-                    }
+                    element={ <CardsContainer /> }
                 />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/register" element={<Register />} />

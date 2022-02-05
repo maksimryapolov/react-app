@@ -1,32 +1,27 @@
 import React from "react";
 import s from "./cards.module.css";
-import {setTextInputCatCreator, setNewExpens} from "./../../redux/redusers/cardsReduser";
-
-function getBodyInvoice(items) {
-    return items.map((item, idx)=>  {
-        return (
-            <div className={s.line} key={idx}>
-                <div>
-                    {item.category}
-                </div>
-                <div>
-                    {item.invoice}
-                </div>
-                <div>
-                    {item.sum} {item.currency}
-                </div>
-            </div>
-        );
-    });
-}
 
 function Cards(props) {
 
-    let refCatInput = React.createRef();
-    let refInvInput = React.createRef();
-    let refSumInput = React.createRef();
+    function getBodyInvoice(items) {
+        return items.map((item, idx)=>  {
+            return (
+                <div className={s.line} key={idx}>
+                    <div>
+                        {item.category}
+                    </div>
+                    <div>
+                        {item.invoice}
+                    </div>
+                    <div>
+                        {item.sum} {item.currency}
+                    </div>
+                </div>
+            );
+        });
+    }
 
-    let dataRender = props.state.cards.map((item, idx) => {
+    let dataRender = props.cards.map((item, idx) => {
         return (
             <div className={s.card} key={idx}>
                 <div className={s.top}>
@@ -45,18 +40,23 @@ function Cards(props) {
     });
 
     function onChangeTxtCat(event) {
-        props.dispatch(setTextInputCatCreator(event.target.value));
+        props.setTextInputCat(event.target.value)
+    }
+    function onChangeTxtInv(event) {
+        props.setTextInputInv(event.target.value)
+    }
+    function onChangeTxtSum(event) {
+        props.setTextInputSum(event.target.value)
+    }
+    function setTextInputDate(event) {
+        props.setTextInputDate(event.target.value)
+    }
+    function setTextInputTime(event) {
+        props.setTextInputTime(event.target.value)
     }
 
     function onSubmithundler() {
-        let data = setNewExpens(
-            { 
-                category: refCatInput.current.value, 
-                invoice: refInvInput.current.value, 
-                sum: refSumInput.current.value
-        });
-
-        props.dispatch(data);
+        props.setNewExpens();
     }
 
     return (
@@ -65,15 +65,23 @@ function Cards(props) {
             <div className="">
                 <div className="">
                     <div>Категория</div>
-                    <input ref={refCatInput} onChange={onChangeTxtCat} type="text" value={props.state.inputs.inputTxtCat}/>
+                    <input onChange={onChangeTxtCat} required type="text" value={props.inputs.inputTxtCat}/>
                 </div>
                 <div className="">
                     <div>Счет</div>
-                    <input ref={refInvInput} type="text"/>
+                    <input onChange={onChangeTxtInv} required type="text" value={props.inputs.inputTxtInv}/>
                 </div>
                 <div className="">
                     <div>Сумма</div>
-                    <input ref={refSumInput} type="text"/>
+                    <input onChange={onChangeTxtSum} required type="number" value={props.inputs.inputTxtSum}/>
+                </div>
+                <div className="">
+                    <div>Время</div>
+                    <input onChange={setTextInputDate} type="date" value={props.inputs.inputTxtDate}/>
+                </div>
+                <div className="">
+                    <div>Дата</div>
+                    <input onChange={setTextInputTime} type="time" value={props.inputs.inputTxtTime}/>
                 </div>
                 <button onClick={onSubmithundler}>Отправить</button>
             </div>
