@@ -21,6 +21,15 @@ function Cards(props) {
         });
     }
 
+    function createSum(items) {
+        let sum = 0;
+        items.forEach((i) => {
+            sum += parseInt(i.sum);
+        });
+
+        return sum;
+    }
+
     let dataRender = props.cards.map((item, idx) => {
         return (
             <div className={s.card} key={idx}>
@@ -29,7 +38,7 @@ function Cards(props) {
                         <div>{item.date}</div>
                     </div>
                     <div>
-                        {item.fullSum} {item.currency}
+                        { createSum(item.items) } {item.currency}
                     </div>
                 </div>
                 <div className={s.body}>

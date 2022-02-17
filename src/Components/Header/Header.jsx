@@ -10,6 +10,13 @@ function Header () {
                     <NavLink to="/">Логотип</NavLink>
                 </h1>
             </div>
+            <div>
+                <ul>
+                    <li>
+                        <NavLink to="/users">Список пользователей</NavLink>
+                    </li>
+                </ul>
+            </div>
             <div className={s.user}>
                 <NavLink className={({ isActive }) => isActive ? s.linkActive : ""} to="/auth">Войти</NavLink>
                 <NavLink className={({ isActive }) => isActive ? s.linkActive : ""} to="/register">Регистрация</NavLink>
