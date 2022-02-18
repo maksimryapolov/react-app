@@ -1,11 +1,15 @@
 import React from "react";
 import {connect} from "react-redux";
+import {compose} from "redux";
 import UsersPresentation from "./UsersPresentation";
+import {Navigate} from "react-router-dom";
 import {
     setCurPage,
     setLoading,
     setUsersApi
 } from "../../redux/redusers/usersReduser"
+import withAuthRedirect from "../../hoc/withAuthRedirect";
+
 
 class Users extends React.Component{
     componentDidMount() {
@@ -47,15 +51,16 @@ function mapStateToProps(state) {
     return {
         users: state.usersPage.users,
         pagination: state.usersPage.pagination,
-        isLoading: state.usersPage.isLoading
+        isLoading: state.usersPage.isLoading,
     }
 }
 
-let usersContainer = connect(mapStateToProps, {
-    setCurPage,
-    setLoading,
-    setUsersApi
-})(Users);
-
-export default usersContainer;
-
+export default compose(
+    connect(mapStateToProps, {
+        setCurPage,
+        setLoading,
+        setUsersApi
+    }),
+    withAuthRedirect
+)
+(Users);

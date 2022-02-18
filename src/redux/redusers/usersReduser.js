@@ -8,11 +8,12 @@ const SET_LOADING = "SET_LOADING";
 let initalState = {
     users: [],
     isLoading: true,
+    isAuth: true,
     pagination: {
         current: 1,
         limit: 3,
         all: 0
-    }
+    },
 };
 
 export let usersReduser = (state = initalState, action) => {
