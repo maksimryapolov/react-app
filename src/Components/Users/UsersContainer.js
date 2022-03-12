@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import {compose} from "redux";
 import UsersPresentation from "./UsersPresentation";
-import {Navigate} from "react-router-dom";
+
 import {
     setCurPage,
     setLoading,

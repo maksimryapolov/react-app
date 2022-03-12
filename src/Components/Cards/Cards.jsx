@@ -1,8 +1,96 @@
 import React from "react";
+import {Formik, Form, Field, ErrorMessage} from "formik";
+import * as Yup from "yup";
+import date from "date-and-time";
 import s from "./cards.module.css";
 
-function Cards(props) {
+const initialValues = () => {
+    const defaultDate = date.format(new Date(), "DD-MM-YYYY").split("-").reverse().join("-");
+    return {
+        category: "",
+        invoice: "",
+        sum: "",
+        date: defaultDate,
+        time: "",
+    }
+};
 
+const onSubmit = values => {
+    console.log(values);
+}
+
+const validationSchema = Yup.object({
+    category: Yup.string().required("Поле обязательно для заполнения!")
+});
+
+/*const validate = (value) => {
+    let errors = {};
+
+    if(!value.category) {
+        errors.category = "Поле обязательно для заполнения!";
+    }
+
+    return errors;
+};*/
+
+
+
+let CardsForm = () => {
+    // const formik = useFormik({
+    //     initialValues: initialValues(),
+    //     onSubmit,
+    //     validationSchema
+    // });
+    console.log("RENDER");
+    return (
+        <Formik
+            initialValues={initialValues()}
+            onSubmit={onSubmit}
+            validationSchema={validationSchema}
+        >
+            <Form>
+                <div className="">
+                    <div>Категория</div>
+                    <Field
+                        required
+                        type="text"
+                        name="category"
+                    />
+                    <div className={s.error}>
+                        <ErrorMessage name="category" />
+                    </div>
+                </div>
+                <div className="">
+                    <div>Счет</div>
+                    <Field
+                        required
+                        name="invoice"
+                        type="text"
+                    />
+                </div>
+                <div className="">
+                    <div>Сумма</div>
+                    <Field
+                        required
+                        name="sum"
+                        type="number"
+                    />
+                </div>
+                <div className="">
+                    <div>Время</div>
+                    <Field name="date" type="date"/>
+                </div>
+                <div className="">
+                    <div>Дата</div>
+                    <Field name="time" type="time"/>
+                </div>
+                <button type="submit">Отправить</button>
+            </Form>
+        </Formik>
+    );
+}
+
+function Cards(props) {
     function getBodyInvoice(items) {
         return items.map((item, idx)=>  {
             return (
@@ -48,55 +136,14 @@ function Cards(props) {
         )
     });
 
-    function onChangeTxtCat(event) {
-        props.setTextInputCat(event.target.value)
-    }
-    function onChangeTxtInv(event) {
-        props.setTextInputInv(event.target.value)
-    }
-    function onChangeTxtSum(event) {
-        props.setTextInputSum(event.target.value)
-    }
-    function setTextInputDate(event) {
-        props.setTextInputDate(event.target.value)
-    }
-    function setTextInputTime(event) {
-        props.setTextInputTime(event.target.value)
-    }
-
-    function onSubmithundler() {
-        props.setNewExpens();
-    }
-
     return (
         <section className={s.cards}>
             { dataRender }
-            <div className="">
-                <div className="">
-                    <div>Категория</div>
-                    <input onChange={onChangeTxtCat} required type="text" value={props.inputs.inputTxtCat}/>
-                </div>
-                <div className="">
-                    <div>Счет</div>
-                    <input onChange={onChangeTxtInv} required type="text" value={props.inputs.inputTxtInv}/>
-                </div>
-                <div className="">
-                    <div>Сумма</div>
-                    <input onChange={onChangeTxtSum} required type="number" value={props.inputs.inputTxtSum}/>
-                </div>
-                <div className="">
-                    <div>Время</div>
-                    <input onChange={setTextInputDate} type="date" value={props.inputs.inputTxtDate}/>
-                </div>
-                <div className="">
-                    <div>Дата</div>
-                    <input onChange={setTextInputTime} type="time" value={props.inputs.inputTxtTime}/>
-                </div>
-                <button onClick={onSubmithundler}>Отправить</button>
-            </div>
-
+            <CardsForm {...props} />
         </section>
     );
 }
+
+
 
 export default Cards;

@@ -1,19 +1,22 @@
 import React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import Cards from "./Cards";
+import { getCards, getInputs } from "./select-cars";
 import {
     setNewExpens,
     setTextInputCatCreator,
     setTextInputInvCreator,
     setTextInputSumCreator,
     setTextInputDateCreator,
-    setTextInputTimeCreator
+    setTextInputTimeCreator,
+    setFakeData,
 } from "../../redux/redusers/cardsReduser";
 
 let mapStateToProps = (state) => {
     return {
-        cards: state.mainPage.cards,
-        inputs: state.mainPage.inputs
+        cards: getCards(state),
+        inputs: getInputs(state),
+        fake: state.mainPage.fake,
     };
 };
 
@@ -36,7 +39,10 @@ let mapStateToDispatch = (dispatch) => {
         },
         setNewExpens: () => {
             dispatch(setNewExpens());
-        }
+        },
+        setFakeData: (fake) => {
+            dispatch(setFakeData(fake));
+        },
     };
 };
 

@@ -5,9 +5,10 @@ const SET_TEXT_INPUT_CATEGORY = "SET_TEXT_INPUT_CATEGORY",
     SET_TEXT_INPUT_INVOICE = "SET_TEXT_INPUT_INVOICE",
     SET_TEXT_INPUT_SUMM = "SET_TEXT_INPUT_SUMM",
     SET_TEXT_INPUT_DATE = "SET_TEXT_INPUT_DATE",
-    SET_TEXT_INPUT_TIME = "SET_TEXT_INPUT_TIME";
+    SET_TEXT_INPUT_TIME = "SET_TEXT_INPUT_TIME",
+    SET_FAKE = "SET_FAKE";
 
-    let initialState = {
+let initialState = {
     cards: [
         {
             date: "01.02.2022",
@@ -65,7 +66,7 @@ const SET_TEXT_INPUT_CATEGORY = "SET_TEXT_INPUT_CATEGORY",
                     currency: "₽",
                 },
             ],
-        }
+        },
     ],
     _curMonth: date.format(new Date(), "MM.YYYY"),
     inputs: {
@@ -73,56 +74,62 @@ const SET_TEXT_INPUT_CATEGORY = "SET_TEXT_INPUT_CATEGORY",
         inputTxtInv: "",
         inputTxtSum: "",
         inputTxtDate: "",
-        inputTxtTime: ""
-    }
+        inputTxtTime: "",
+    },
+    fake: "",
 };
 
 export let cardsReduser = (state = initialState, action) => {
     /* Не копировать state за switch */
     switch (action.type) {
+        case SET_FAKE:
+            return {
+                ...state,
+                fake: action.fake,
+            };
         case SET_TEXT_INPUT_CATEGORY:
             return {
                 ...state,
                 inputs: {
                     ...state.inputs,
-                    inputTxtCat: action.text
-                }
+                    inputTxtCat: action.text,
+                },
             };
         case SET_TEXT_INPUT_INVOICE:
             return {
                 ...state,
                 inputs: {
                     ...state.inputs,
-                    inputTxtInv: action.text
-                }
+                    inputTxtInv: action.text,
+                },
             };
         case SET_TEXT_INPUT_SUMM:
             return {
                 ...state,
                 inputs: {
                     ...state.inputs,
-                    inputTxtSum: action.text
-                }
+                    inputTxtSum: action.text,
+                },
             };
         case SET_TEXT_INPUT_DATE:
             return {
                 ...state,
                 inputs: {
                     ...state.inputs,
-                    inputTxtDate: action.text
-                }
+                    inputTxtDate: action.text,
+                },
             };
         case SET_TEXT_INPUT_TIME:
             return {
                 ...state,
                 inputs: {
                     ...state.inputs,
-                    inputTxtTime: action.text
-                }
+                    inputTxtTime: action.text,
+                },
             };
         case SET_NEW_EXPENS: {
             let dateNew = new Date(state.inputs.inputTxtDate);
-            let dateNewFormatted = date.format(dateNew, 'MM.YYYY');
+            let dateNewFormatted = date.format(dateNew, "MM.YYYY");
             let index = null;
             let newCard;
             let expense = {};
@@ -130,45 +137,48 @@ export let cardsReduser = (state = initialState, action) => {
                 return {
                     date: date,
                     currency: "₽",
-                    items: []
-                }
+                    items: [],
+                };
             };
 
-            if(state._curMonth === dateNewFormatted) {
+            if (state._curMonth === dateNewFormatted) {
                 let curDate = "";
                 let curDateFormatted = "";
-                dateNewFormatted = date.format(dateNew, 'DD.MM.YYYY');
+                dateNewFormatted = date.format(dateNew, "DD.MM.YYYY");
 
                 state.cards.forEach((i, idx) => {
-                    curDate = new Date(i.date.split('.').reverse().join("."));
-                    curDateFormatted = date.format(curDate, 'DD.MM.YYYY');
-                    if(curDateFormatted === dateNewFormatted) {
+                    curDate = new Date(i.date.split(".").reverse().join("."));
+                    curDateFormatted = date.format(curDate, "DD.MM.YYYY");
+                    if (curDateFormatted === dateNewFormatted) {
                         index = idx;
-                    } else if (index === null && curDateFormatted > dateNewFormatted) {
+                    } else if (
+                        index === null &&
+                        curDateFormatted > dateNewFormatted
+                    ) {
                         index = idx;
-                        newCard = createNewCard(dateNewFormatted)
+                        newCard = createNewCard(dateNewFormatted);
                     }
                 });
             }
 
-            if(index !== null) {
+            if (index !== null) {
                 expense = {
                     category: state.inputs.inputTxtCat,
                     invoice: state.inputs.inputTxtInv,
                     sum: state.inputs.inputTxtSum,
-                    currency: "₽"
+                    currency: "₽",
                 };
 
                 let stateCopy = {
                     ...state,
-                    cards: [...state.cards]
+                    cards: [...state.cards],
                 };
 
                 stateCopy.inputs.inputTxtCat = "";
                 stateCopy.inputs.inputTxtInv = "";
                 stateCopy.inputs.inputTxtSum = "";
 
-                if(newCard) {
+                if (newCard) {
                     newCard.items.push(expense);
                     stateCopy.cards.splice(index, 0, newCard);
                 } else {
@@ -181,6 +191,13 @@ export let cardsReduser = (state = initialState, action) => {
         default:
             return state;
     }
+};
+
+export let setFakeData = (fake) => {
+    return {
+        type: SET_FAKE,
+        fake,
+    };
 };
 
 export let setTextInputCatCreator = (text) => {
@@ -219,4 +236,3 @@ export let setTextInputTimeCreator = (text) => {
 };
 
 export let setNewExpens = () => ({ type: SET_NEW_EXPENS });
-

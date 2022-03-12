@@ -2,7 +2,7 @@ import React from "react";
 import {Navigate} from "react-router-dom";
 import {connect} from "react-redux";
 
-let mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
     return {
         isAuth: state.usersPage.isAuth
     };
